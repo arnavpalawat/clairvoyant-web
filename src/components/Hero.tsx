@@ -56,25 +56,28 @@ export default function Hero() {
         />
 
         {/* Floating particles */}
-        {[...Array(8)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1.5 h-1.5 bg-amber/30 rounded-full"
+            className="absolute rounded-full"
             style={{
-              left: `${10 + i * 12}%`,
-              top: `${15 + (i % 4) * 20}%`,
+              width: `${1 + (i % 3) * 0.5}px`,
+              height: `${1 + (i % 3) * 0.5}px`,
+              left: `${5 + (i * 4.5) % 90}%`,
+              top: `${10 + (i * 7) % 80}%`,
+              backgroundColor: i % 3 === 0 ? "rgba(245, 158, 11, 0.4)" : i % 3 === 1 ? "rgba(124, 58, 237, 0.3)" : "rgba(248, 244, 235, 0.2)",
             }}
             animate={{
-              y: [0, -40, 0],
-              x: [0, i % 2 === 0 ? 15 : -15, 0],
-              opacity: [0.2, 0.7, 0.2],
-              scale: [1, 1.5, 1],
+              y: [0, -50 - (i % 4) * 10, 0],
+              x: [0, i % 2 === 0 ? 20 : -20, 0],
+              opacity: [0.1, 0.6, 0.1],
+              scale: [1, 1.8, 1],
             }}
             transition={{
-              duration: 6 + i * 0.5,
+              duration: 5 + (i % 5) * 1.5,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.8,
+              delay: i * 0.3,
             }}
           />
         ))}
@@ -190,46 +193,6 @@ export default function Hero() {
               </motion.span>
             </motion.div>
 
-            {/* Social Proof with hover effects */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              className="mt-12 flex items-center gap-4 justify-center lg:justify-start"
-            >
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <motion.div
-                    key={i}
-                    className="w-9 h-9 rounded-full border-2 border-void flex items-center justify-center text-xs text-cream-muted cursor-default"
-                    style={{
-                      background: `linear-gradient(135deg, hsl(${
-                        i * 40 + 20
-                      }, 30%, 18%) 0%, hsl(${i * 40 + 20}, 30%, 12%) 100%)`,
-                    }}
-                    whileHover={{
-                      y: -8,
-                      scale: 1.15,
-                      zIndex: 10,
-                      borderColor: "rgba(245, 158, 11, 0.5)",
-                    }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                  >
-                    {String.fromCharCode(64 + i)}
-                  </motion.div>
-                ))}
-              </div>
-              <p className="text-sm text-cream-muted">
-                <motion.span
-                  className="text-amber font-medium"
-                  animate={{ opacity: [1, 0.7, 1] }}
-                  transition={{ duration: 2.5, repeat: Infinity }}
-                >
-                  2,400+
-                </motion.span>{" "}
-                on the waitlist
-              </p>
-            </motion.div>
           </div>
 
           {/* Right Content - Hero Visual */}

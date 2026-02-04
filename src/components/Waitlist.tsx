@@ -68,24 +68,28 @@ export default function Waitlist() {
       />
 
       {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
+      {[...Array(18)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-amber/40 rounded-full"
+          className="absolute rounded-full"
           style={{
-            left: `${15 + i * 15}%`,
-            top: `${20 + (i % 3) * 25}%`,
+            width: `${1 + (i % 3) * 0.5}px`,
+            height: `${1 + (i % 3) * 0.5}px`,
+            left: `${8 + (i * 5) % 85}%`,
+            top: `${15 + (i * 6) % 70}%`,
+            backgroundColor: i % 3 === 0 ? "rgba(245, 158, 11, 0.5)" : i % 3 === 1 ? "rgba(124, 58, 237, 0.35)" : "rgba(248, 244, 235, 0.25)",
           }}
           animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.5, 1],
+            y: [0, -40 - (i % 3) * 15, 0],
+            x: [0, i % 2 === 0 ? 15 : -15, 0],
+            opacity: [0.15, 0.7, 0.15],
+            scale: [1, 1.6, 1],
           }}
           transition={{
-            duration: 4 + i,
+            duration: 4 + (i % 4) * 1.2,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.5,
+            delay: i * 0.25,
           }}
         />
       ))}
@@ -153,7 +157,7 @@ export default function Waitlist() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-cream-muted mb-12 max-w-lg mx-auto"
           >
-            Join 2,400+ professionals who never walk into a meeting unprepared.
+            Be the first to experience AI that knows what you need before you ask.
           </motion.p>
 
           {/* Email Form */}
@@ -256,41 +260,6 @@ export default function Waitlist() {
             </motion.p>
           </motion.div>
 
-          {/* Animated avatars */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-12 flex items-center justify-center gap-4"
-          >
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <motion.div
-                  key={i}
-                  className="w-10 h-10 rounded-full border-2 border-void bg-void-lighter flex items-center justify-center text-xs text-cream-muted"
-                  style={{
-                    background: `linear-gradient(135deg, hsl(${
-                      i * 40 + 20
-                    }, 30%, 18%) 0%, hsl(${i * 40 + 20}, 30%, 12%) 100%)`,
-                  }}
-                  whileHover={{ y: -5, zIndex: 10 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                >
-                  {String.fromCharCode(64 + i)}
-                </motion.div>
-              ))}
-            </div>
-            <p className="text-sm text-cream-muted">
-              <motion.span
-                className="text-amber font-medium"
-                animate={{ opacity: [1, 0.7, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                2,400+
-              </motion.span>{" "}
-              already joined
-            </p>
-          </motion.div>
         </div>
       </div>
     </section>
