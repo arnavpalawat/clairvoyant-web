@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNavHovered, setIsNavHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,13 +25,28 @@ export default function Navigation() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8"
       >
-        <nav
-          className={`max-w-4xl mx-auto flex items-center justify-between px-5 py-2.5 rounded-full transition-all duration-500 ${
+        <motion.nav
+          onHoverStart={() => setIsNavHovered(true)}
+          onHoverEnd={() => setIsNavHovered(false)}
+          className={`max-w-4xl mx-auto flex items-center justify-between px-5 py-2.5 rounded-full transition-all duration-500 relative ${
             isScrolled
               ? "bg-void-card/90 backdrop-blur-xl border border-border shadow-2xl shadow-black/20"
               : "bg-void-card/60 backdrop-blur-md border border-border/50"
           }`}
         >
+          {/* Orange aura on hover */}
+          <motion.div
+            className="absolute inset-0 rounded-full pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse at center, rgba(245, 158, 11, 0.15) 0%, transparent 70%)",
+              filter: "blur(20px)",
+            }}
+            animate={{
+              opacity: isNavHovered ? 1 : 0,
+              scale: isNavHovered ? 1.1 : 1,
+            }}
+            transition={{ duration: 0.3 }}
+          />
           {/* Logo */}
           <motion.a
             href="#"
@@ -91,11 +107,18 @@ export default function Navigation() {
             </motion.a>
             <motion.a
               href="#waitlist"
-              className="relative overflow-hidden px-4 py-1.5 rounded-full bg-cream text-void text-sm font-medium"
+              className="relative overflow-hidden px-4 py-1.5 rounded-full bg-cream text-void text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2 focus-visible:ring-offset-void active:ring-2 active:ring-amber active:ring-offset-2 active:ring-offset-void"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.95, boxShadow: "0 0 0 3px rgba(245, 158, 11, 0.5)" }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
+              {/* Glow effect on active/focus */}
+              <motion.div
+                className="absolute -inset-1 rounded-full bg-amber/30 blur-md pointer-events-none"
+                initial={{ opacity: 0 }}
+                whileTap={{ opacity: 1 }}
+                transition={{ duration: 0.15 }}
+              />
               <motion.span
                 className="relative z-10 flex items-center gap-1.5"
                 whileHover={{ x: 2 }}
@@ -134,7 +157,7 @@ export default function Navigation() {
               )}
             </motion.div>
           </motion.button>
-        </nav>
+        </motion.nav>
       </motion.header>
 
       {/* Mobile Menu */}

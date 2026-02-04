@@ -133,7 +133,7 @@ export default function Footer() {
 
           {/* Divider with animation */}
           <motion.div
-            className="w-24 h-px bg-gradient-to-r from-transparent via-cream-dark/30 to-transparent mt-2 mb-8"
+            className="w-32 h-px bg-gradient-to-r from-transparent via-cream-dark/40 to-transparent mt-10 mb-10"
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
