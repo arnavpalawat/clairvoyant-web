@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -61,7 +62,7 @@ export default function Navigation() {
             >
               {/* Animated glow */}
               <motion.div
-                className="absolute inset-0 bg-amber rounded-lg blur-md"
+                className="absolute inset-0 bg-amber rounded-full blur-md"
                 animate={{
                   opacity: [0.2, 0.5, 0.2],
                   scale: [1, 1.3, 1],
@@ -72,18 +73,14 @@ export default function Navigation() {
                   ease: "easeInOut",
                 }}
               />
-              {/* Star icon */}
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="w-4 h-4 relative z-10"
-              >
-                <path
-                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                  fill="currentColor"
-                  className="text-amber"
-                />
-              </svg>
+              {/* Logo */}
+              <Image
+                src="/logo.png"
+                alt="Clairvoyant"
+                width={28}
+                height={28}
+                className="relative z-10 rounded-full"
+              />
             </motion.div>
             <span className="text-base font-semibold tracking-tight text-cream">
               Clairvoyant
