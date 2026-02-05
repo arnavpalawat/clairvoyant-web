@@ -3,19 +3,43 @@
 import { motion } from "motion/react";
 import { useInView } from "motion/react";
 import { useRef, useState } from "react";
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles, Loader2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function Waitlist() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setIsSubmitted(true);
+    if (!email) return;
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const { error: supabaseError } = await supabase
+        .from("waitlist")
+        .insert([{ email }]);
+
+      if (supabaseError) {
+        if (supabaseError.code === "23505") {
+          setError("You're already on the waitlist!");
+        } else {
+          throw supabaseError;
+        }
+      } else {
+        setIsSubmitted(true);
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -191,28 +215,45 @@ export default function Waitlist() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
                       required
-                      className="flex-1 px-5 py-3 bg-transparent text-cream placeholder:text-cream-dark focus:outline-none text-sm"
+                      disabled={isLoading}
+                      className="flex-1 px-5 py-3 bg-transparent text-cream placeholder:text-cream-dark focus:outline-none text-sm disabled:opacity-50"
                     />
                     <motion.button
                       type="submit"
-                      className="px-6 py-3 rounded-full bg-cream text-void text-sm font-medium flex items-center gap-2"
-                      whileHover={{ scale: 1.02, backgroundColor: "#fbbf24" }}
-                      whileTap={{ scale: 0.98 }}
+                      disabled={isLoading}
+                      className="px-6 py-3 rounded-full bg-cream text-void text-sm font-medium flex items-center gap-2 disabled:opacity-70"
+                      whileHover={!isLoading ? { scale: 1.02, backgroundColor: "#fbbf24" } : {}}
+                      whileTap={!isLoading ? { scale: 0.98 } : {}}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     >
-                      <span>Join</span>
-                      <motion.span
-                        animate={{ x: [0, 4, 0] }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      >
-                        <ArrowRight className="w-4 h-4" />
-                      </motion.span>
+                      {isLoading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <>
+                          <span>Join</span>
+                          <motion.span
+                            animate={{ x: [0, 4, 0] }}
+                            transition={{
+                              duration: 1.5,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }}
+                          >
+                            <ArrowRight className="w-4 h-4" />
+                          </motion.span>
+                        </>
+                      )}
                     </motion.button>
                   </div>
+                  {error && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-burgundy-light text-sm mt-3 text-center"
+                    >
+                      {error}
+                    </motion.p>
+                  )}
                 </motion.div>
               </form>
             ) : (

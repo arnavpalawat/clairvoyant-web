@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
 import { Twitter, Linkedin } from "lucide-react";
+import Image from "next/image";
 
 const socialLinks = [
   { icon: Twitter, href: "#", label: "Twitter" },
@@ -64,7 +65,7 @@ export default function Footer() {
             >
               {/* Animated glow */}
               <motion.div
-                className="absolute inset-0 bg-amber rounded-lg blur-lg"
+                className="absolute inset-0 bg-amber rounded-full blur-lg"
                 animate={{
                   opacity: [0.15, 0.35, 0.15],
                   scale: [1, 1.4, 1],
@@ -75,17 +76,13 @@ export default function Footer() {
                   ease: "easeInOut",
                 }}
               />
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="w-5 h-5 relative z-10"
-              >
-                <path
-                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                  fill="currentColor"
-                  className="text-amber"
-                />
-              </svg>
+              <Image
+                src="/logo.png"
+                alt="Clairvoyant"
+                width={32}
+                height={32}
+                className="relative z-10 rounded-full"
+              />
             </motion.div>
             <span className="text-lg font-semibold tracking-tight text-cream">
               Clairvoyant
